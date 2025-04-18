@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="rs2xml">
+    <archive path="C:/Users/dell6/Downloads/rs2xml.jar" />
+  </library>
+  <library name="mysql-connector-java-8.0.28">
+    <archive path="C:/Users/dell6/Downloads/mysql-connector-java-8.0.28.jar" />
+  </library>
+  <library name="commons-dbutils-1.8">
+    <archive path="C:/Users/dell6/Downloads/commons-dbutils-1.8.1/commons-dbutils-1.8.1.jar" />
+    <archive path="C:/Users/dell6/Downloads/commons-dbutils-1.8.1/commons-dbutils-1.8.1-tests.jar" />
+    <archive path="C:/Users/dell6/Downloads/commons-dbutils-1.8.1/commons-dbutils-1.8.1-javadoc.jar" />
+    <archive path="C:/Users/dell6/Downloads/commons-dbutils-1.8.1/commons-dbutils-1.8.1-sources.jar" />
+    <archive path="C:/Users/dell6/Downloads/commons-dbutils-1.8.1/commons-dbutils-1.8.1-test-sources.jar" />
+  </library>
+</eclipse-userlibraries>
+

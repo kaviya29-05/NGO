@@ -3,15 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
-import Controller.DB;
 //import com.mysql.cj.xdevapi.Statement;
+import Controller.DB;
+
 import static java.lang.Integer.max;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.*;
+
 /**
  *
  * @author ayush

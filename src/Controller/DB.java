@@ -1,26 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controller;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.*;
 
-/**
- *
- * @author ayush
- */
 public class DB {
-    public static Connection getConnection(){
-                Connection con = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-                        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/NGOMS", "akd", "helloakd");
-		 } catch ( ClassNotFoundException | SQLException e ) {
-			System.err.println(e.getClass().getName()+ "Failed here" + ": " + e.getMessage() );
-		 }
-		 return con;
-	}
+    private static final String URL = "jdbc:mysql://localhost:3306/NGOMS";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
+
+    public static Connection getConnection() {
+        Connection con = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException e) {
+            System.err.println("JDBC Driver not found: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Database connection failed: " + e.getMessage());
+        }
+        return con;
+    }
+
+    // ✅ Place the main method INSIDE the class like this:
+    public static void main(String[] args) {
+        Connection con = getConnection();
+        if (con != null) {
+            System.out.println("✅ Database connected successfully!");
+        } else {
+            System.out.println("❌ Failed to connect to the database.");
+        }
+    }
 }

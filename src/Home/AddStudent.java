@@ -25,7 +25,7 @@ public class AddStudent extends javax.swing.JFrame {
         user = new Student();
         initComponents();
     }
-    
+
     String p_age;
     String p_class;
     String p_percent;
@@ -284,7 +284,7 @@ public class AddStudent extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // below are the functions storing the data when it is entered in the respective text fields or check boxes
-    
+
     private void namefieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namefieldActionPerformed
         // TODO add your handling code here:
         user.setName(namefield.getText());
@@ -353,57 +353,90 @@ public class AddStudent extends javax.swing.JFrame {
         AdminDashboard.main(new String[]{});
         dispose();
     }//GEN-LAST:event_backbuttonActionPerformed
-    
+
     // when the save button is clicked
     private void savebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savebuttonActionPerformed
-        // TODO add your handling code here:
-        if("".equals(namefield.getText()))
-            JOptionPane.showMessageDialog(null,"Name cannot be empty" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if("".equals(agefield.getText()))
-            JOptionPane.showMessageDialog(null,"Age cannot be empty" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if(!agefield.getText().trim().matches("[0-9]+"))
-            JOptionPane.showMessageDialog(null,"Invalid Age" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if("".equals(classfield.getText()))
-            JOptionPane.showMessageDialog(null,"Class cannot be empty" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if(!classfield.getText().trim().matches("[0-9]+"))
-            JOptionPane.showMessageDialog(null,"Invalid Class" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if("".equals(schoolfield.getText()))
-            JOptionPane.showMessageDialog(null,"School cannot be empty" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if("".equals(percentfield.getText()))
-            JOptionPane.showMessageDialog(null,"Percentage cannot be empty" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if(!percentfield.getText().trim().matches("[0-9]+"))
-            JOptionPane.showMessageDialog(null,"Invalid Percent" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if(!incomefield.getText().trim().matches("[0-9]+"))
-            JOptionPane.showMessageDialog(null,"Invalid Income" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if("".equals(incomefield.getText()))
-            JOptionPane.showMessageDialog(null,"Parental Income cannot be empty" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if(!amountfield.getText().trim().matches("[0-9]+"))
-            JOptionPane.showMessageDialog(null,"Invalid Amount" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else if(user.validateData(namefield.getText(), Integer.parseInt(p_age), Integer.parseInt(p_class), genderbox.getSelectedItem().toString(), user.getSchool(), Integer.parseInt(p_percent), Integer.parseInt(p_income)))
-            JOptionPane.showMessageDialog(null, "Record Already Exists" , "ERROR", JOptionPane.ERROR_MESSAGE);
-        else{
-            int input;
-            input = JOptionPane.showConfirmDialog(AddStudent.this,"Do you really want to add this student ?","Are you sure?",JOptionPane.YES_NO_OPTION);
-            if( input == 0)
-            {       
-                    user.setAge(Integer.parseInt(p_age));
-                    user.setClass(Integer.parseInt(p_class));
-                    user.setPercent(Integer.parseInt(p_percent));
-                    user.setIncome(Integer.parseInt(p_income));
-                    user.setMoney(Integer.parseInt(p_amount));
-                    user.setGender(genderbox.getSelectedItem().toString());
-                    int i = user.save();
-                    if(i>0){
-                            JOptionPane.showMessageDialog(null, "Record Added Successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
-                            AdminDashboard.main(new String[]{});
-                            dispose();
-                    }
-                    else{
-                            JOptionPane.showMessageDialog(AddStudent.this,"Sorry, unable to save!");
-                    }
+        try {
+            // Fetch values from text fields
+            String p_name = namefield.getText().trim();
+            String p_age = agefield.getText().trim();
+            String p_class = classfield.getText().trim();
+            String p_school = schoolfield.getText().trim();
+            String p_percent = percentfield.getText().trim();
+            String p_income = incomefield.getText().trim();
+            String p_amount = amountfield.getText().trim();
+            String p_gender = genderbox.getSelectedItem().toString();
+
+            // Validation checks
+            if (p_name.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Name cannot be empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            if (p_age.isEmpty() || !p_age.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Invalid Age", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (p_class.isEmpty() || !p_class.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Invalid Class", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (p_school.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "School cannot be empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (p_percent.isEmpty() || !p_percent.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Invalid Percentage", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (p_income.isEmpty() || !p_income.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Invalid Parental Income", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (p_amount.isEmpty() || !p_amount.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Invalid Amount", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Convert validated values
+            int age = Integer.parseInt(p_age);
+            int studentClass = Integer.parseInt(p_class);
+            int percent = Integer.parseInt(p_percent);
+            int income = Integer.parseInt(p_income);
+            int money = Integer.parseInt(p_amount);
+
+            // Check if record exists
+            if (user.validateData(p_name, age, studentClass, p_gender, p_school, percent, income)) {
+                JOptionPane.showMessageDialog(null, "Record Already Exists", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Confirm before saving
+            int input = JOptionPane.showConfirmDialog(this, "Do you really want to add this student?", "Are you sure?", JOptionPane.YES_NO_OPTION);
+            if (input == JOptionPane.YES_OPTION) {
+                user.setAge(age);
+                user.setClass(studentClass);
+                user.setPercent(percent);
+                user.setIncome(income);
+                user.setMoney(money);
+                user.setGender(p_gender);
+
+                // Save the student
+                int i = user.save();
+                if (i > 0) {
+                    JOptionPane.showMessageDialog(null, "Record Added Successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                    AdminDashboard.main(new String[]{});
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Sorry, unable to save!");
+                }
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid number format! Please enter valid numeric values.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_savebuttonActionPerformed
+
 
     private void genderboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderboxActionPerformed
 
@@ -416,7 +449,7 @@ public class AddStudent extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
